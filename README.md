@@ -1,5 +1,5 @@
 # Unity Projekt von Elias, Lucas und Joel
-> Actopm amd Adventure Puzzle game
+> Action and Adventure Puzzle game
 ## Mindest anforderungen
 <ol>
   <li>3 Level = Elias</li>
