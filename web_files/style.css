@@ -1,0 +1,10 @@
+body{
+    margin: 10em;
+    font-family: Comic Sans Ms;
+}
+#title{
+    font-size: 7em;
+    line-height: 0;
+    margin-bottom: 1em;
+    text-align: center;
+}
