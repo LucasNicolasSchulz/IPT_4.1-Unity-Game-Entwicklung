@@ -1,10 +1,10 @@
 # Space Game made with Unity 2021.3.9f1
 ## Installation
-## How to play the game
+### How to play the game
 
  - coming soon
 
-## How to downlaod the Project
+### How to downlaod the Project
  1. [Download the repository](https://github.com/JoelErni/IPT_4.1-Unity/archive/refs/heads/main.zip) as a zip
  2. Extract the files from the zip file
  3. Downlaod UnityHub [here](https://unity3d.com/get-unity/download) and install it
