@@ -6,10 +6,11 @@
 
 ## How to downlaod the Project
  1. Downlaod UnityHub [here](https://unity3d.com/get-unity/download) and install it
- 2. Open UnityHub, click on 'Installs', then 'Add' and the select unity version (2021.3.9f1 for this project). Click on 'Next' and then 'Done'. The installation should start now. (It can take a while until its finished installing) <br><img src="https://github.com/JoelErni/IPT_4.1-Unity/blob/main/README_images/step1.gif" alt="step 1 image" width="500">
- 5. (You may need to create a Unity-Account and activate a free personal licence in order to use unity)
- 6. After the installation is finished, go to the 'Projects' tab
- 7. Click on the 'Add' button and select the project
+ 2. Open UnityHub, create a unity-account if you don't have one, and then sign in
+ 3. Click on 'Installs', then 'Add' and the select unity version (2021.3.9f1 for this project). Click on 'Next' and then 'Done'. The installation should now start. (It can take a while until its finished installing) <br><img src="https://github.com/JoelErni/IPT_4.1-Unity/blob/main/README_images/step1.gif" alt="step 1 image" width="500">
+ 4. (You may need to activate a license -> Go to your account on the top left -> manage license)
+ 5. After the installation is finished, go to the 'Projects' tab
+ 6. Click on the 'Add' button and select the project. The project should automatically start. <br><img src="https://github.com/JoelErni/IPT_4.1-Unity/blob/main/README_images/step2.gif" alt="step 2 image" width="500">
 
 ## Documentation
 ### Programmers
