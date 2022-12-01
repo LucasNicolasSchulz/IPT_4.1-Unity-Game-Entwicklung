@@ -6,7 +6,7 @@
 
 ## How to downlaod the Project
  1. Downlaod UnityHub [here](https://unity3d.com/get-unity/download)
- 2. After the installation is finished. Open UnityHub and go to 'installs', then 'add' <br> <img src="https://github.com/JoelErni/IPT_4.1-Unity/blob/main/README_images/1.png" alt="Step 1" width="500"/><br><img src="https://github.com/JoelErni/IPT_4.1-Unity/blob/main/README_images/2.png" alt="Step 1.1" width="500"/>
+ 2. After the installation is finished. Open UnityHub and go to 'Installs', then 'Add' <img src="https://github.com/JoelErni/IPT_4.1-Unity/blob/main/README_images/step1.gif" alt="step 1 image" width="200">
  4. Select the Unity Version you want to download (Unity 2021.3.9f1 for this project) and install it
  5. (You may need to create a Unity-Account and activate a free personal licence in order to use unity)
  6. After the installation is finished, go to the 'Projects' tab
