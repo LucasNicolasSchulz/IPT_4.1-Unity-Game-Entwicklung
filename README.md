@@ -1,4 +1,4 @@
-# Space Game made with Unity 2021.3.9f1
+# Space Game made with Unity 2021.3.14f1
 > [Website](https://joelerni.github.io/IPT_4.1-Unity/web_files/)
 ## Installation
 ### How to play the game
