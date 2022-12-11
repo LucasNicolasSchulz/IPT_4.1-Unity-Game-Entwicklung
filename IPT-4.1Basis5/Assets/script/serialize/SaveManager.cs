@@ -55,12 +55,20 @@ public class SaveMa : MonoBehaviour
 
   public static bool file_exist()
   {
+    /*
+     * Gibt einen bool zurück
+     * Schaut, ob die Savefile exestiert oder nicht
+     */
     string fullpath = Application.persistentDataPath + directory + filename;
     return File.Exists(fullpath) ? true : false;
   }
 
   public static void delete()
   {
+    /*
+     * Löscht das Savefile
+     * Für 'new Game'
+     */
     string fullpath = Application.persistentDataPath + directory + filename;
     File.Delete(fullpath);
   }

@@ -47,14 +47,20 @@ public class serialize : MonoBehaviour
     {
       if (SceneManager.GetActiveScene().name == "Bossfight" || SceneManager.GetActiveScene().name == "Gang") //Falls der geladene Spielstand im Bosskampf ist. Wird der Charakter immer auf der gleichen Position starten
       {
+        /*
+         * Gibt die gelesenen Werte weiter
+         */
         GetComponent<skincolor>().color = so.skincolor;
-        transform.position = GameObject.Find("Spawnpoint").transform.position;
+        transform.position = GameObject.Find("Spawnpoint").transform.position; // Man spawnt immer an einem bestimmten Punkt
         transform.rotation = so.lastrot;
         GameObject.Find("Canvas 1").GetComponent<UI>().current_life = so.life;
         GetComponent<hat>().activated_hat = so.hat;
       }
       else
       {
+        /*
+         * Gibt die gelesenen Werte weiter
+         */
         transform.position = so.lastpos;
         transform.rotation = so.lastrot;
         GetComponent<skincolor>().color = so.skincolor;
@@ -84,11 +90,17 @@ public class serialize : MonoBehaviour
 
   public bool save_data_exist()
   {
+    /*
+     * Schaut, ob das Savefile exestiert und gibt einen Bool zurück
+     */
     return SaveMa.file_exist();
   }
 
   public void delete_file()
   {
+    /*
+     * Löscht das Savefile
+     */
     SaveMa.delete();
   }
 }

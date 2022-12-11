@@ -61,15 +61,15 @@ public class Boss : MonoBehaviour
 
       for (int i = 0; i < 4; i++) //Schaden (Räder verschwinden)
       {
-        wheels[i].SetActive(!(life <= (Mathf.Abs(i - 3))));
+        wheels[i].SetActive(!(life <= (Mathf.Abs(i - 3)))); // Je nach leben, hat es weniger Räder
       }
 
-      if (life <= 0)
+      if (life <= 0) // Wenn es kein Leben hat
       {
-        GameObject.Find("SceneManager").GetComponent<SceneChange>().NextScene_activate = true; //falls alle Räder weg sind, lädt die nächste Szene
+        GameObject.Find("SceneManager").GetComponent<SceneChange>().NextScene_activate = true; //lädt die nächste Szene
       }
 
-      bossbar.GetComponentInChildren<Slider>().value = life;
+      bossbar.GetComponentInChildren<Slider>().value = life; // Value vom Slider (Lebensanzeige)wird auf das leben gesetzt
     }
     //Augen rotation (Zur Kamera)
     eye0.LookAt(camPos.transform.position);

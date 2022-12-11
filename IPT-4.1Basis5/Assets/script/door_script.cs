@@ -16,25 +16,31 @@ public class door_script : MonoBehaviour
   }
   void FixedUpdate()
   {
-    if (Vector3.Distance(transform.position, GameObject.Find("Player").transform.position)<7.5f)
+    if (Vector3.Distance(transform.position, GameObject.Find("Player").transform.position)<7.5f) // wenn der Abstand zwischen Spieler und Türe unter 7.5 ist...
     {
-      anim.SetBool("BTN 1", true);
+      anim.SetBool("BTN 1", true); // Spielt animation ab, damit Türe sich öffnet
     }
-
     else
     {
-      anim.SetBool("BTN 1", false);
+      anim.SetBool("BTN 1", false); // Spielt animation ab, damit Türe sich schliesst
     }
   }
 
   void close_sound()
   {
+    /*
+     * Spielt einen Sound ab während sich die Türe schliesst
+     */
     audiosource.clip = door_close;
     audiosource.Play();
 
   }
   void open_sound()
   {
+    /*
+     * Spielt einen Sound ab während sich die Türe öffnet
+     */
+
     audiosource.clip = door_open;
     audiosource.Play();
   }

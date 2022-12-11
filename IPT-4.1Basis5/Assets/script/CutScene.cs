@@ -19,10 +19,10 @@ public class CutScene : MonoBehaviour
     /*
      * Wenn das Video nicht mehr am abspielen ist (also fertig ist), dann wechselt es die Szene
      */
-    while (vp.isPlaying)
+    while (vp.isPlaying) // Wartet, bis Video fertig ist
     {
       yield return new WaitForEndOfFrame();
     }
-    SceneManager.LoadScene(nextscene);
+    SceneManager.LoadScene(nextscene); // wehcselt Szene
   }
 }
