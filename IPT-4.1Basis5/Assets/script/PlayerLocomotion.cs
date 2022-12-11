@@ -2,157 +2,120 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLocomotion : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    PlayerManager playerManager;
+    // Eine Referenz auf die PlayerControls-Klasse, die für die Verarbeitung von Eingaben verwendet wird
+    PlayerControls playerControls;
+
+    // Referenzen auf andere Komponenten im GameObject, die für die Verarbeitung von Eingaben benötigt werden
     AnimatorManager animatorManager;
-    InputManager inputManager;
-    Vector3 moveDirection;
+    PlayerLocomotion playerLocomotion;
 
-    [Header("Generell")]
-    Transform cameraObject;
-    Rigidbody Astronout;
+    // Öffentliche Variablen, die die X- und Y-Eingaben der Kamera speichern
+    public float cameraInputX;
+    public float cameraInputY;
 
-    [Header("Falling")]
-    public bool isGrounded;
-    public bool issprinting;
-    public float rayCastHeightOffSet = 0.5f;
-    public LayerMask groundLayer;
-    public float fallingSpeed;
-    public float leapingVelocity;
-    public float inAirTimer;
+    // Öffentliche Variablen, die die Eingaben des Spielers für Bewegung und Kamera speichern
+    public Vector2 movementInput;
+    public Vector2 cameraInput;
 
-    [Header("Movement Speeds")]
-    public float walkingSpeed = 3;
-    public float runningspeed = 7;
-    public float sprintingspeed = 2;
-    public float rotationspeed = 8;
+    // Öffentliche Variablen, die die Bewegungsmenge des Spielers und die Eingaben für Bewegung in Richtungen entlang der X- und Y-Achsen speichern
+    public float moveAmount;
+    public float verticalInput;
+    public float horizontalInput;
 
-    [Header("Movement")]
-    public bool isJumping;
-    public float jumpHeight = 3;
-    public float gravityIntensity = -15;
+    // Öffentliche Variablen, die Eingaben für Sprints, Sprünge und das Pausenmenü speichern
+    public bool shift_Input;
+    public bool jump_Input;
+    public bool p_Input;
 
-    public void FixedUpdate()
-    {
-        if (transform.position.y < -25)
-            GetComponent<serialize>().reset_world();
-    }
-
+    // Der Awake-Callback wird aufgerufen, bevor das Skript initialisiert wird
     private void Awake()
     {
+        // Holt sich eine Referenz auf den AnimatorManager- und PlayerLocomotion-Komponenten im GameObject
         animatorManager = GetComponent<AnimatorManager>();
-        playerManager = GetComponent<PlayerManager>();
-        inputManager = GetComponent<InputManager>();
-        Astronout = GetComponent<Rigidbody>();
-        cameraObject = Camera.main.transform;
-        
+        playerLocomotion = GetComponent<PlayerLocomotion>();
     }
 
-    public void HandleAllMovement()
+    // Der OnEnable-Callback wird aufgerufen, wenn das Skript aktiviert wird
+    private void OnEnable()
     {
-        HandleFallingAndLanding();
+        if (playerControls == null)
+        {
+            playerControls = new PlayerControls();
 
-        if (playerManager.isInteracting)
-        {
-            return;
+            // Zuweisen der ausgeführten und stornierten Ereignisse für die Bewegungs- und Kameraeingaben
+            playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+            playerControls.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+
+            // Zuweisen der ausgeführten und stornierten Ereignisse für die Sprint- und Sprungaktionen
+            playerControls.PlayerActions.Sprint.performed += i => shift_Input = true;
+            playerControls.PlayerActions.Sprint.canceled += i => shift_Input = false;
+            playerControls.PlayerActions.Jump.performed += i => jump_Input = true;
+
+            // Zuweisen der ausgeführten und stornierten Ereignisse für die Pausemenüaktion
+            playerControls.ButtonAction.PauseMenu.performed += i => p_Input = true;
+            playerControls.ButtonAction.PauseMenu.canceled += i => p_Input = false;
         }
-        HandleMovement();
-        HandleRotation();
+
+        // Aktivieren der Spielersteuerungen
+        playerControls.Enable();
     }
-    private void HandleMovement()
+
+    private void OnDisable()
     {
-        if (isJumping)
+        // Deaktivieren der Spielersteuerungen
+        playerControls.Disable();
+    }
+
+    public void HandleAllInputs()
+    {
+        // Verarbeiten der Bewegungs-, Sprint- und Sprungseingaben
+        HandleMovementInput();
+        SprintingInput();
+        HandleJumpingInput();
+    }
+
+    private void HandleMovementInput()
+    {
+        // Zuweisen der horizontalen und vertikalen Eingabewerte aus dem Bewegungseingabevektor
+        verticalInput = movementInput.y;
+        horizontalInput = movementInput.x;
+
+        // Zuweisen der Kameraeingabewerte aus dem Kameraeingabevektor
+        cameraInputX = cameraInput.y;
+        cameraInputY = cameraInput.x;
+
+        // Berechnen der Bewegungsmenge und Aktualisieren des Animators
+        moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
+        animatorManager.UpdateAnimatorValues(0, moveAmount, shift_Input);
+    }
+    private void Start()
+    {
+        // Sperren des Cursors in der Mitte des Bildschirms
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void SprintingInput()
+    {
+        // Überprüfen, ob der Shift-Eingabe wahr ist und setzen Sie den Sprintwert entsprechend
+        if (shift_Input)
         {
-            return;
-        }
-        moveDirection = cameraObject.forward * inputManager.verticalInput;
-        moveDirection = moveDirection + cameraObject.right * inputManager.horizontalInput;
-        moveDirection.Normalize();
-        moveDirection.y = 0;
-        
-        if (issprinting)
-        {
-            moveDirection = moveDirection * sprintingspeed;
+            playerLocomotion.issprinting = true;
         }
         else
         {
-            moveDirection = moveDirection * walkingSpeed * 4;
-        }
-
-        Vector3 movementVelocity = moveDirection;
-        Astronout.velocity = movementVelocity;
-
-
-    }
-
-    private void HandleRotation()
-    {
-        if (isJumping)
-            return;
-        Vector3 targetDirection = Vector3.zero;
-
-        targetDirection = cameraObject.forward * inputManager.verticalInput;
-        targetDirection = targetDirection + cameraObject.right * inputManager.horizontalInput;
-        targetDirection.Normalize();
-        targetDirection.y = 0;
-
-        if (targetDirection == Vector3.zero)
-        {
-            targetDirection = transform.forward;
-        }
-
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-        Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationspeed * Time.deltaTime);
-
-        transform.rotation = playerRotation;
-    }
-
-    private void HandleFallingAndLanding()
-    {
-        RaycastHit hit;
-        Vector3 rayCastOrigin = transform.position;
-        rayCastOrigin.y = rayCastOrigin.y + rayCastHeightOffSet;
-
-        if (!isGrounded && !isJumping)
-        {
-            if (!playerManager.isInteracting)
-            {
-                animatorManager.PlayTargetAnimation("Falling", true);
-            }
-
-            inAirTimer = inAirTimer + Time.deltaTime;
-            Astronout.AddForce(transform.forward * leapingVelocity);
-            Astronout.AddForce(-Vector3.up * fallingSpeed * inAirTimer);
-        }
-
-        if(Physics.SphereCast(rayCastOrigin, 0.2f, -Vector3.up, out hit, groundLayer))
-        {
-            if (!isGrounded && playerManager.isInteracting)
-            {
-                animatorManager.PlayTargetAnimation("Landing", true);
-            }
-            inAirTimer = 0;
-            isGrounded = true;
-        }
-        else
-        {
-            isGrounded = false;
+            playerLocomotion.issprinting = false;
         }
     }
 
-    public void HandleJumping()
+    private void HandleJumpingInput()
     {
-        if (isGrounded)
+        // Überprüfen, ob der Sprungeingabe true ist und rufen Sie die HandleJumping-Methode auf, wenn sie es ist
+        if (jump_Input)
         {
-            animatorManager.animator.SetBool("isJumping", false);
-            animatorManager.PlayTargetAnimation("Jump", true);
-
-            float jumpingVelocity = Mathf.Sqrt(-2 * gravityIntensity * jumpHeight);
-            Vector3 playerVelocity = moveDirection;
-            playerVelocity.y = jumpingVelocity;
-            Astronout.velocity = playerVelocity;
-            
+            jump_Input = false;
+            playerLocomotion.HandleJumping();
         }
     }
 }
