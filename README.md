@@ -4,6 +4,9 @@
 ### How to play the game
 
  - coming soon
+ 1. Download the zip
+ 2. Extract the files
+ 3. Execute the .exe file
 
 ### How to downlaod and open the Project
  1. [Download the repository](https://github.com/JoelErni/IPT_4.1-Unity/archive/refs/heads/main.zip) as a zip
